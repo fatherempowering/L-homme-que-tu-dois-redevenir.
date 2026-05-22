@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>L'Homme que tu dois redevenir – Father Empowering</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --black:  #1A1A1A;
+  --orange: #C85A00;
+  --white:  #FFFFFF;
+  --off:    #F2F0EB;
+  --ink:    #1A1A1A;
+  --ink2:   #444444;
+  --lit:    #E0E0E0;
+  --lit2:   #9A9A9A;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: var(--black);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 15px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── REVEAL ── */
+.page, .break-page {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity .6s ease, transform .6s ease;
+}
+.page.visible, .break-page.visible { opacity: 1; transform: none; }
+
+/* ── DARK / LIGHT ── */
+.pg-dark {
+  background: var(--black); color: var(--white);
+  width: 100%; max-width: 820px; margin: 0 auto;
+  padding: 80px 64px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.pg-light {
+  background: var(--off); color: var(--ink);
+  width: 100%; max-width: 820px; margin: 0 auto;
+  padding: 80px 64px;
+  border-bottom: 1px solid rgba(0,0,0,0.07);
+}
+
+/* ── SHARED ATOMS ── */
+.section-label {
+  font-size: 10px; letter-spacing: 5px;
+  text-transform: uppercase; display: block;
+  margin-bottom: 12px; color: var(--orange);
+}
+.section-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(34px, 6vw, 54px);
+  letter-spacing: 2px; line-height: 1;
+  margin-bottom: 10px;
+}
+.pg-dark .section-title { color: var(--white); }
+.pg-light .section-title { color: var(--ink); }
+
+.chapter-label {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 11px; letter-spacing: 5px;
+  text-transform: uppercase; color: var(--orange);
+  display: block; margin-bottom: 8px;
+}
+.divider { width: 44px; height: 2px; background: var(--orange); margin: 22px 0 34px; }
+
+.body-text { font-size: 14.5px; line-height: 1.8; max-width: 640px; }
+.pg-dark  .body-text { color: var(--lit); }
+.pg-light .body-text { color: var(--ink2); }
+
+/* ── COVER ── */
+#cover {
+  min-height: 100vh; display: flex; flex-direction: column; justify-content: space-between;
+  padding: 64px 64px 52px; background: var(--black);
+  border-bottom: 1px solid rgba(200,90,0,0.3);
+  max-width: 820px; margin: 0 auto;
+}
+.cover-brand { font-family: 'Bebas Neue', sans-serif; font-size: 11px; letter-spacing: 5px; color: var(--orange); }
+.cover-center { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 64px 0 44px; }
+.cover-doc { font-family: 'Bebas Neue', sans-serif; font-size: 10px; letter-spacing: 4px; color: var(--lit2); margin-bottom: 28px; }
+.cover-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(52px, 9vw, 88px); line-height: .9; letter-spacing: 2px; color: var(--white); }
+.cover-title span { color: var(--orange); }
+.cover-rule { width: 56px; height: 3px; background: var(--orange); margin: 28px 0; }
+.cover-sub { font-size: 17px; letter-spacing: 0.5px; color: var(--white); max-width: 520px; font-weight: 600; line-height: 1.65; }
+.cover-footer { display: flex; justify-content: space-between; align-items: flex-end; border-top: 1px solid rgba(255,255,255,0.07); padding-top: 24px; }
+.cover-footer-label { font-size: 10px; letter-spacing: 3px; color: var(--lit2); text-transform: uppercase; }
+.cover-handle { font-family: 'Bebas Neue', sans-serif; font-size: 13px; letter-spacing: 3px; color: var(--orange); }
+
+/* ── LETTER ── */
+.letter-body p { margin-bottom: 18px; max-width: 580px; font-size: 14.5px; }
+.pg-light .letter-body p { color: var(--ink2); }
+.pg-dark  .letter-body p { color: var(--lit); }
+.letter-pull {
+  border-left: 3px solid var(--orange);
+  padding: 16px 24px; margin: 32px 0;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px; letter-spacing: 1.5px; line-height: 1.2;
+}
+.pg-light .letter-pull { background: rgba(200,90,0,0.08); color: var(--ink); }
+.pg-dark  .letter-pull { background: rgba(200,90,0,0.12); color: var(--white); }
+.letter-sig { margin-top: 40px; }
+.letter-sig .name { font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 2px; color: var(--orange); }
+.letter-sig .role { font-size: 10px; letter-spacing: 2.5px; color: var(--ink2); text-transform: uppercase; margin-top: 4px; }
+.pg-dark .letter-sig .role { color: var(--lit2); }
+
+/* ── BREAK STATE ── */
+.break-page {
+  min-height: 46vh; display: flex; align-items: center; justify-content: center; text-align: center;
+  background: var(--black); border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.break-inner {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(22px, 5vw, 40px); letter-spacing: 3px;
+  color: var(--white); max-width: 620px; padding: 60px; line-height: 1.2;
+}
+.break-inner span { color: var(--orange); }
+
+/* ── CHAPTER CONTENT ── */
+.chapter-intro { max-width: 620px; margin-bottom: 40px; font-size: 14.5px; line-height: 1.8; }
+.pg-dark  .chapter-intro { color: var(--lit); }
+.pg-light .chapter-intro { color: var(--ink2); }
+
+.sub-heading {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px; letter-spacing: 2px; margin: 36px 0 14px;
+}
+.pg-dark  .sub-heading { color: var(--white); }
+.pg-light .sub-heading { color: var(--ink); }
+
+.body-p { font-size: 14px; line-height: 1.8; max-width: 620px; margin-bottom: 16px; }
+.pg-dark  .body-p { color: var(--lit); }
+.pg-light .body-p { color: var(--ink2); }
+
+/* key fact / rule boxes */
+.fact-box {
+  margin: 32px 0; padding: 20px 24px;
+  border-left: 3px solid var(--orange);
+}
+.pg-dark  .fact-box { background: rgba(200,90,0,0.10); }
+.pg-light .fact-box { background: rgba(200,90,0,0.07); }
+.fact-box .fact-label {
+  font-size: 9px; letter-spacing: 4px; text-transform: uppercase;
+  color: var(--orange); margin-bottom: 8px; display: block;
+}
+.fact-box .fact-text { font-size: 13.5px; line-height: 1.75; }
+.pg-dark  .fact-box .fact-text { color: var(--lit); }
+.pg-light .fact-box .fact-text { color: var(--ink2); }
+.fact-box .fact-text strong { font-weight: 700; }
+.pg-dark  .fact-box .fact-text strong { color: var(--white); }
+.pg-light .fact-box .fact-text strong { color: var(--ink); }
+
+/* bullet lists */
+.item-list { list-style: none; margin: 16px 0 24px; max-width: 580px; }
+.item-list li {
+  font-size: 13.5px; padding: 9px 0; display: flex; align-items: flex-start; gap: 12px; line-height: 1.6;
+}
+.pg-dark  .item-list li { color: var(--lit); border-bottom: 1px solid rgba(255,255,255,0.05); }
+.pg-light .item-list li { color: var(--ink2); border-bottom: 1px solid rgba(0,0,0,0.06); }
+.item-list li::before { content: '·'; color: var(--orange); flex-shrink: 0; font-size: 11px; margin-top: 2px; }
+.item-list li strong { font-weight: 700; }
+.pg-dark  .item-list li strong { color: var(--white); }
+.pg-light .item-list li strong { color: var(--ink); }
+
+/* 2-col grid (for chapters with targets) */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; margin: 24px 0; }
+.pg-dark  .two-col { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.06); }
+.pg-light .two-col { background: rgba(0,0,0,0.08); border: 1px solid rgba(0,0,0,0.08); }
+.col-block { padding: 28px 24px; }
+.pg-dark  .col-block { background: var(--black); }
+.pg-light .col-block { background: var(--off); }
+.col-block h4 {
+  font-family: 'Bebas Neue', sans-serif; font-size: 12px; letter-spacing: 4px;
+  color: var(--orange); margin-bottom: 16px; text-transform: uppercase;
+}
+.col-block ul { list-style: none; }
+.col-block ul li { font-size: 13px; padding: 7px 0; display: flex; align-items: flex-start; gap: 10px; }
+.pg-dark  .col-block ul li { color: var(--lit); border-bottom: 1px solid rgba(255,255,255,0.05); }
+.pg-light .col-block ul li { color: var(--ink2); border-bottom: 1px solid rgba(0,0,0,0.05); }
+.col-block ul li::before { content: '·'; color: var(--orange); font-size: 10px; flex-shrink: 0; margin-top: 2px; }
+
+/* numbered steps (meal prep) */
+.step-list { display: flex; flex-direction: column; gap: 1px; margin: 24px 0; }
+.pg-dark  .step-list { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.06); }
+.pg-light .step-list { background: rgba(0,0,0,0.08); border: 1px solid rgba(0,0,0,0.08); }
+.step-item { display: flex; align-items: flex-start; gap: 0; }
+.pg-dark  .step-item { background: var(--black); }
+.pg-light .step-item { background: var(--off); }
+.step-num {
+  flex-shrink: 0; width: 56px; min-height: 56px;
+  background: var(--orange);
+  font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 2px;
+  color: var(--white); display: flex; align-items: center; justify-content: center;
+}
+.step-content { padding: 18px 22px; flex: 1; }
+.step-content h4 {
+  font-family: 'Bebas Neue', sans-serif; font-size: 17px; letter-spacing: 2px;
+  margin-bottom: 6px;
+}
+.pg-dark  .step-content h4 { color: var(--white); }
+.pg-light .step-content h4 { color: var(--ink); }
+.step-content p { font-size: 13px; line-height: 1.7; }
+.pg-dark  .step-content p { color: var(--lit); }
+.pg-light .step-content p { color: var(--ink2); }
+
+/* supplements grid */
+.supp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; margin-top: 28px; }
+.pg-dark  .supp-grid { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.06); }
+.pg-light .supp-grid { background: rgba(0,0,0,0.08); border: 1px solid rgba(0,0,0,0.08); }
+.supp-col { padding: 28px 24px; }
+.pg-dark  .supp-col { background: var(--black); }
+.pg-light .supp-col { background: var(--off); }
+.supp-col h4 { font-family: 'Bebas Neue', sans-serif; font-size: 11px; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 16px; }
+.supp-col.works h4 { color: var(--orange); }
+.supp-col.skip  h4 { color: #555; }
+.supp-col ul { list-style: none; }
+.supp-col ul li { font-size: 13px; padding: 8px 0; display: flex; align-items: flex-start; gap: 10px; }
+.pg-dark  .supp-col.works ul li { color: var(--lit); border-bottom: 1px solid rgba(255,255,255,0.05); }
+.pg-light .supp-col.works ul li { color: var(--ink2); border-bottom: 1px solid rgba(0,0,0,0.05); }
+.supp-col.works ul li::before { content: '✔'; color: var(--orange); flex-shrink: 0; }
+.supp-col.skip  ul li { color: #555; text-decoration: line-through; text-decoration-color: #444; border-bottom: 1px solid rgba(255,255,255,0.03); }
+.supp-col.skip  ul li::before { content: '✘'; color: #555; flex-shrink: 0; }
+.supp-item-name { font-weight: 700; }
+.pg-dark  .supp-item-name { color: var(--white); }
+.pg-light .supp-item-name { color: var(--ink); }
+
+/* quote style */
+.big-quote {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(22px, 4.5vw, 36px); letter-spacing: 2px; line-height: 1.2;
+  font-style: italic; margin: 36px 0;
+}
+.pg-dark  .big-quote { color: var(--lit2); }
+.pg-light .big-quote { color: var(--ink2); }
+.big-quote span { color: var(--orange); font-style: normal; }
+
+/* ── CTA ── */
+#cta { background: var(--black); max-width: 820px; margin: 0 auto; overflow: hidden; padding: 0; }
+.cta-top { padding: 72px 64px 52px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+.cta-eyebrow { font-size: 10px; letter-spacing: 5px; text-transform: uppercase; color: var(--orange); display: block; margin-bottom: 20px; }
+.cta-headline { font-family: 'Bebas Neue', sans-serif; font-size: clamp(44px, 8.5vw, 80px); letter-spacing: 2px; line-height: .93; color: var(--white); margin-bottom: 32px; }
+.cta-headline em { color: var(--orange); font-style: normal; }
+.cta-includes { list-style: none; max-width: 480px; margin-bottom: 8px; }
+.cta-includes li { font-size: 13.5px; color: var(--lit); padding: 9px 0; border-bottom: 1px solid rgba(255,255,255,0.06); display: flex; align-items: center; gap: 12px; }
+.cta-includes li::before { content: '·'; color: var(--orange); flex-shrink: 0; }
+.cta-price { font-family: 'Bebas Neue', sans-serif; font-size: clamp(18px, 3.5vw, 26px); letter-spacing: 3px; color: var(--orange); margin-top: 28px; }
+
+.cta-action {
+  background: var(--orange); padding: 56px 64px 52px;
+  display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 40px;
+}
+.cta-instruction { font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: rgba(255,255,255,0.75); margin-bottom: 4px; font-family: 'Bebas Neue', sans-serif; }
+.cta-keyword { font-family: 'Bebas Neue', sans-serif; font-size: clamp(72px, 14vw, 120px); letter-spacing: 6px; line-height: 1; color: var(--white); display: block; }
+.cta-note { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.65); margin-top: 10px; font-weight: 500; }
+.cta-right { text-align: right; }
+.cta-brand-stack { font-family: 'Bebas Neue', sans-serif; font-size: 13px; letter-spacing: 4px; color: rgba(255,255,255,0.85); line-height: 1.9; }
+.cta-url { display: inline-block; margin-top: 14px; background: rgba(0,0,0,0.18); padding: 8px 18px; font-family: 'Bebas Neue', sans-serif; font-size: 15px; letter-spacing: 3px; color: #fff; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 640px) {
+  .pg-dark, .pg-light { padding: 56px 28px; }
+  #cover { padding: 52px 28px; }
+  .cta-top { padding: 52px 28px 40px; }
+  .cta-action { padding: 44px 28px; flex-direction: column; align-items: flex-start; }
+  .cta-right { text-align: left; }
+  .two-col, .supp-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══ COVER, DARK ══ -->
+<section id="cover" class="page">
+  <span class="cover-brand">Father Empowering</span>
+  <div class="cover-center">
+
+    <h1 class="cover-title">
+      L'Homme<br>
+      <span>que tu dois</span><br>
+      redevenir.
+    </h1>
+    <div class="cover-rule"></div>
+    <p class="cover-sub">Le guide de nutrition pour les pères<br>qui refusent de s'effacer.</p>
+  </div>
+  <div class="cover-footer">
+    <div class="cover-footer-label">Nutrition · Performance · Leadership</div>
+    <div class="cover-handle">@fatherempowering</div>
+  </div>
+</section>
+
+<!-- ══ LETTRE, LIGHT ══ -->
+<section class="page pg-light">
+  <span class="section-label">Lettre Directe</span>
+  <h2 class="section-title">Ce que personne<br>ne te dit.</h2>
+  <div class="divider"></div>
+  <div class="letter-body">
+    <p>Tu sais que quelque chose a changé.</p>
+    <p>Pas dramatiquement. Graduellement. Mais c'est là.</p>
+    <p>L'énergie qui n'est plus la même. La ceinture qui a bougé d'un cran. Le miroir qui renvoie l'image d'un homme qui s'est laissé aller sans vraiment s'en rendre compte.</p>
+    <p>Tu avais un physique. Tu t'entraînais. Tu te sentais fort. Et puis la vie a pris de la place, le travail, les enfants, les responsabilités, et le corps est passé en second plan.</p>
+    <p>Le problème n'est pas le temps. Le problème n'est pas la discipline. Le problème, c'est que personne ne t'a donné un système adapté à ta réalité : celle d'un père de 40 ans qui veut reprendre le contrôle.</p>
+    <div class="letter-pull">«&nbsp;Tes enfants n'ont pas besoin d'un père parfait. Ils ont besoin d'un père fort.&nbsp;»</div>
+    <p>Ce guide n'est pas une diète. Ce n'est pas un plan générique copié d'un magazine. C'est un système de nutrition conçu pour un seul profil : le père entre 38 et 49 ans, qui veut redevenir l'homme fort de sa famille.</p>
+    <p>Chaque décision que tu prends avec ta nutrition est un acte de leadership. Chaque repas bien construit est un signal à ton corps : je reprends les commandes.</p>
+    <p>Voici le blueprint.</p>
+    <div class="letter-sig">
+      <div class="name">Maxime Bourdon</div>
+      <div class="role">Fondateur · Father Empowering</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ BREAK ══ -->
+<div class="break-page">
+  <div class="break-inner">
+    Chaque repas bien construit est un signal.<br>
+    <span>Je reprends les commandes.</span>
+  </div>
+</div>
+
+<!-- ══ CHAPITRE 1 : PROTÉINES, DARK ══ -->
+<section class="page pg-dark">
+  <span class="chapter-label">Chapitre 01 / 08</span>
+  <h2 class="section-title">Les Protéines</h2>
+  <p style="font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:2px;color:var(--orange);margin-bottom:28px;">La force que tu dois à ta famille.</p>
+  <div class="divider"></div>
+  <p class="chapter-intro">Après 40 ans, tu perds entre 1 et 2% de masse musculaire par année si tu ne t'y opposes pas activement. Ce n'est pas une statistique abstraite. C'est la différence entre le père qui soulève ses enfants et celui qui refuse d'essayer.<br><br>La protéine est le seul macronutriment qui stoppe cette dégradation. Pas partiellement, complètement, si tu en consommes assez.</p>
+
+  <h3 class="sub-heading">Pourquoi les protéines définissent ton physique</h3>
+  <p class="body-p">Les protéines sont constituées d'acides aminés : les matériaux de construction de tes muscles, de tes hormones et de ton système immunitaire. 9 de ces acides aminés sont essentiels : ton corps ne peut pas les produire. Tu dois les obtenir par ton alimentation.</p>
+  <p class="body-p">Sans apport suffisant, ton corps va chercher ses acides aminés ailleurs. Où ? Dans ton muscle. C'est ce qu'on appelle le catabolisme. À 40 ans, avec un niveau de testostérone naturellement en baisse, ton corps est encore plus vulnérable à ce phénomène.</p>
+
+  <div class="fact-box">
+    <span class="fact-label">Fait Clé</span>
+    <p class="fact-text">La leucine, présente en abondance dans les viandes, œufs et produits laitiers, <strong>déclenche directement la synthèse des protéines musculaires.</strong> 2 à 3g de leucine par repas suffisent à activer ce processus.</p>
+  </div>
+
+  <h3 class="sub-heading">Combien de protéines par jour ?</h3>
+  <p class="body-p">La recommandation scientifique pour un homme actif entre 38 et 49 ans :</p>
+  <ul class="item-list">
+    <li>Transformation et perte de graisse : <strong>0.9 à 1.1g par lb de poids corporel</strong></li>
+    <li>Maintien musculaire : <strong>0.7 à 0.9g par lb</strong></li>
+    <li>Exemple : 185 lbs = <strong>165 à 205g de protéines par jour</strong></li>
+  </ul>
+  <p class="body-p">Ce chiffre est volontairement plus élevé que les recommandations générales. À partir de 40 ans, l'efficacité de la synthèse protéique diminue. Tu as besoin de plus pour obtenir le même résultat qu'à 25 ans.</p>
+
+  <h3 class="sub-heading">Meilleures sources de protéines</h3>
+  <ul class="item-list">
+    <li><strong>Poulet (poitrine)</strong> : 31g pour 100g</li>
+    <li><strong>Œufs entiers</strong> : source complète, biodisponibilité maximale</li>
+    <li><strong>Saumon</strong> : 25g pour 100g + oméga-3 anti-inflammatoires</li>
+    <li><strong>Bœuf haché maigre</strong> : 26g pour 100g + zinc + B12</li>
+    <li><strong>Fromage cottage / yaourt grec</strong> : 10 à 17g, idéal le soir</li>
+  </ul>
+
+  <div class="fact-box">
+    <span class="fact-label">Règle Pratique</span>
+    <p class="fact-text"><strong>Construis chaque repas autour d'une source de protéines.</strong> 30 à 40g par repas, 4 fois par jour. Le reste de l'assiette suit cette base.</p>
+  </div>
+</section>
+
+<!-- ══ CHAPITRE 2 : GLUCIDES, LIGHT ══ -->
+<section class="page pg-light">
+  <span class="chapter-label">Chapitre 02 / 08</span>
+  <h2 class="section-title">Les Glucides</h2>
+  <p style="font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:2px;color:var(--orange);margin-bottom:28px;">Carburant pour l'action, pas pour la passivité.</p>
+  <div class="divider"></div>
+  <p class="chapter-intro">Les glucides ne sont pas ton ennemi. La passivité est ton ennemi. Un père actif, qui s'entraîne avec intensité, a besoin de glucides. Un homme sédentaire sur le canapé, pas autant.<br><br>La question n'est pas d'éliminer les glucides. La question est de <strong>les gagner.</strong></p>
+
+  <h3 class="sub-heading">Comment les glucides fonctionnent</h3>
+  <p class="body-p">Les glucides sont convertis en glucose, qui alimente tes muscles pendant l'effort intense. Ils sont stockés sous forme de glycogène dans tes muscles et ton foie. Quand tes réserves sont pleines, tu as l'énergie pour t'entraîner dur. Quand elles sont vides, tes performances s'effondrent.</p>
+  <p class="body-p">Le problème pour la plupart des hommes de 40 ans n'est pas d'avoir trop de glucides. C'est de consommer les mauvais glucides, au mauvais moment, sans les brûler.</p>
+
+  <div class="fact-box">
+    <span class="fact-label">Le Principe</span>
+    <p class="fact-text">Les glucides à indice glycémique bas (patates douces, avoine, riz brun) <strong>maintiennent ton énergie stable.</strong> Les glucides raffinés créent des pics d'insuline suivis de chutes d'énergie, et stockent le gras.</p>
+  </div>
+
+  <h3 class="sub-heading">Quelle quantité pour toi ?</h3>
+  <div class="two-col">
+    <div class="col-block">
+      <h4>Jours d'entraînement</h4>
+      <ul>
+        <li>1.4 à 2.3g par lb de poids corporel</li>
+        <li>Ex. 185 lbs = 260 à 425g</li>
+      </ul>
+    </div>
+    <div class="col-block">
+      <h4>Jours de repos</h4>
+      <ul>
+        <li>0.7 à 1.1g par lb de poids corporel</li>
+        <li>Ex. 185 lbs = 130 à 205g</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 class="sub-heading">Sources recommandées</h3>
+  <ul class="item-list">
+    <li><strong>Patate douce</strong>, dense en nutriments, indice glycémique modéré</li>
+    <li><strong>Riz blanc autour de l'entraînement</strong>, digestion rapide, idéal pre/post workout</li>
+    <li><strong>Avoine</strong>, lente à digérer, parfaite pour le matin</li>
+    <li><strong>Fruits</strong>, glucides naturels + micronutriments</li>
+    <li><strong>Légumes verts</strong>, fibres, volume, nutriments à volonté</li>
+  </ul>
+</section>
+
+<!-- ══ BREAK ══ -->
+<div class="break-page">
+  <div class="break-inner">
+    La question n'est pas d'éliminer les glucides.<br>
+    <span>La question est de les gagner.</span>
+  </div>
+</div>
+
+<!-- ══ CHAPITRE 3 : LIPIDES, DARK ══ -->
+<section class="page pg-dark">
+  <span class="chapter-label">Chapitre 03 / 08</span>
+  <h2 class="section-title">Les Lipides</h2>
+  <p style="font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:2px;color:var(--orange);margin-bottom:28px;">La fondation hormonale que tu ne peux pas ignorer.</p>
+  <div class="divider"></div>
+  <p class="chapter-intro">La testostérone est construite à partir du cholestérol. Le cholestérol vient des lipides alimentaires. Un régime trop pauvre en graisses = testostérone basse = moins d'énergie, moins de muscle, moins de vitalité.<br><br><strong>Manger des graisses saines n'est pas une option pour un homme de 40 ans. C'est une nécessité biologique.</strong></p>
+
+  <h3 class="sub-heading">Les lipides que tu dois consommer</h3>
+
+  <ul class="item-list">
+    <li><strong>Graisses monoinsaturées.</strong> Huile d'olive, avocats, amandes. Anti-inflammatoires. Supportent la santé cardiovasculaire et le profil hormonal.</li>
+    <li><strong>Oméga-3 (graisses polyinsaturées).</strong> Saumon, sardines, noix, graines de chia. Réduisent l'inflammation systémique, la même qui ralentit ta récupération et sabote tes entraînements.</li>
+    <li><strong>Graisses saturées (modérées).</strong> Bœuf nourri à l'herbe, œufs entiers. Un apport modéré de graisses saturées d'aliments complets supporte la production de testostérone.</li>
+  </ul>
+
+  <div class="fact-box">
+    <span class="fact-label">Quelle quantité ?</span>
+    <p class="fact-text"><strong>20 à 35% de tes calories totales.</strong><br><br>Pour un objectif de 2 500 calories/jour :<br><strong>55 à 97g de lipides par jour.</strong></p>
+  </div>
+
+  <div class="fact-box">
+    <span class="fact-label">Attention</span>
+    <p class="fact-text">Évite les graisses trans (produits industriels). Si l'étiquette dit <strong>«&nbsp;partiellement hydrogéné&nbsp;»</strong>, pose-le.</p>
+  </div>
+</section>
+
+<!-- ══ CHAPITRE 4 : MICRONUTRIMENTS, LIGHT ══ -->
+<section class="page pg-light">
+  <span class="chapter-label">Chapitre 04 / 08</span>
+  <h2 class="section-title">Les Micronutriments</h2>
+  <p style="font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:2px;color:var(--orange);margin-bottom:28px;">Les armes secrètes de la performance masculine.</p>
+  <div class="divider"></div>
+  <p class="chapter-intro">Vitamines et minéraux ne fournissent pas directement de l'énergie. Mais sans eux, chaque autre système fonctionne à 60% de sa capacité. Tu t'entraînes dur, tu manges bien, et tu récupères mal parce qu'une déficience en magnésium sabote ton sommeil.</p>
+
+  <h3 class="sub-heading">Les 4 micronutriments critiques</h3>
+
+  <ul class="item-list">
+    <li>
+      <div>
+        <strong>Vitamine D : La vitamine testostérone</strong><br>
+        La majorité des hommes vivant au Canada sont en déficience. Directement liée à la production de testostérone et à la force musculaire. Cible : 2 000 à 4 000 UI par jour. Associer à K2 (100mcg).
+      </div>
+    </li>
+    <li>
+      <div>
+        <strong>Zinc : Testostérone et récupération</strong><br>
+        Déficience = testostérone basse. Sources : huîtres, bœuf, graines de courge. Supplément si alimentation pauvre en viandes rouges.
+      </div>
+    </li>
+    <li>
+      <div>
+        <strong>Magnésium : Sommeil et récupération</strong><br>
+        Améliore la qualité du sommeil, réduit les crampes, gère le cortisol. Sources : épinards, noix, graines de courge, chocolat noir 85%+.
+      </div>
+    </li>
+    <li>
+      <div>
+        <strong>Oméga-3 (EPA/DHA)</strong><br>
+        Anti-inflammatoires. Récupération articulaire, cerveau, cœur. 1 à 3g d'EPA+DHA par jour. Poisson gras 3x/semaine ou supplément.
+      </div>
+    </li>
+  </ul>
+
+  <div class="fact-box">
+    <span class="fact-label">Stratégie Simple</span>
+    <p class="fact-text"><strong>Mange des légumes de 3 couleurs différentes par jour.</strong> Ce seul principe couvre la majorité de tes besoins en micronutriments.</p>
+  </div>
+</section>
+
+<!-- ══ BREAK ══ -->
+<div class="break-page">
+  <div class="break-inner">
+    Tu t'entraînes dur. Tu manges bien.<br>
+    <span>Mais si tu récupères mal, tout le reste est du bruit.</span>
+  </div>
+</div>
+
+<!-- ══ CHAPITRE 5 : TIMING, DARK ══ -->
+<section class="page pg-dark">
+  <span class="chapter-label">Chapitre 05 / 08</span>
+  <h2 class="section-title">Le Timing<br>des Repas</h2>
+  <p style="font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:2px;color:var(--orange);margin-bottom:28px;">La structure d'un homme discipliné.</p>
+  <div class="divider"></div>
+  <p class="chapter-intro">Un père sans structure ne mange pas mal intentionnellement. Il mange mal par défaut. Le timing des repas n'est pas une obsession, c'est un système qui retire les décisions de l'équation.</p>
+
+  <h3 class="sub-heading">Le cadre journalier</h3>
+
+  <ul class="item-list">
+    <li>
+      <div>
+        <strong>Repas 1, Déjeuner (signal de départ)</strong><br>
+        Protéines élevées. Glucides complexes. Graisses saines. Ce repas définit ton niveau d'énergie pour les 4 heures suivantes.<br>
+        <em style="color:var(--lit2);">Exemples : œufs + avoine + avocat · Yaourt grec + fruits + noix.</em>
+      </div>
+    </li>
+    <li>
+      <div>
+        <strong>Dîner (signal de récupération)</strong><br>
+        Glucides rapides + protéines légères. Objectif : glycogène disponible, récupération amorcée avant le coucher.<br>
+        <em style="color:var(--lit2);">Riz blanc + saumon · Patate douce + poulet · Banane + shake protéiné.</em>
+      </div>
+    </li>
+    <li>
+      <div>
+        <strong>Post-entraînement (dans les 2 heures)</strong><br>
+        Protéines rapides + glucides pour recharger le glycogène. C'est la fenêtre de reconstruction. <strong>Ne la saute pas.</strong>
+      </div>
+    </li>
+    <li>
+      <div>
+        <strong>Repas du soir</strong><br>
+        Protéines à digestion lente + légumes + graisses. Soutient la récupération nocturne.<br>
+        <em style="color:var(--lit2);">Saumon + patate douce + épinards.</em>
+      </div>
+    </li>
+  </ul>
+
+  <div class="fact-box">
+    <span class="fact-label">Sur le Jeûne Intermittent</span>
+    <p class="fact-text">Le 16:8 est compatible avec ce système. <strong>Condition : atteindre tes cibles protéiques dans la fenêtre de 8 heures.</strong></p>
+  </div>
+</section>
+
+<!-- ══ CHAPITRE 6 : HYDRATATION, LIGHT ══ -->
+<section class="page pg-light">
+  <span class="chapter-label">Chapitre 06 / 08</span>
+  <h2 class="section-title">L'Hydratation</h2>
+  <p style="font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:2px;color:var(--orange);margin-bottom:28px;">L'outil de performance le plus négligé.</p>
+  <div class="divider"></div>
+  <p class="chapter-intro">Une déshydratation de seulement 2% du poids corporel réduit la performance physique de façon mesurable. Concentration, force, endurance, tout chute. Et la plupart des hommes arrivent déshydratés à leurs entraînements sans le savoir.</p>
+
+  <h3 class="sub-heading">Tes besoins quotidiens</h3>
+  <ul class="item-list">
+    <li>Base homme actif : <strong>3.7 litres par jour</strong></li>
+    <li>Ajouter <strong>500ml à 1L par heure</strong> d'entraînement intense</li>
+    <li>Indicateur simple : <strong>urine claire à jaune pâle = bien hydraté</strong></li>
+  </ul>
+
+  <h3 class="sub-heading">Électrolytes : pourquoi l'eau seule ne suffit pas</h3>
+  <p class="body-p">Sodium, potassium, magnésium régulent l'équilibre des fluides dans tes cellules. En sueur intense, tu les perds. Sans les remplacer : crampes, fatigue, baisse de performance.</p>
+
+  <div class="fact-box">
+    <span class="fact-label">Solution Maison</span>
+    <p class="fact-text"><strong>1L d'eau + 1/4 c. à café de sel de mer + jus d'un citron.</strong> Efficace, économique, zéro additif.</p>
+  </div>
+</section>
+
+<!-- ══ BREAK ══ -->
+<div class="break-page">
+  <div class="break-inner">
+    Un homme organisé ne mange pas par hasard.<br>
+    <span>Il mange avec intention.</span>
+  </div>
+</div>
+
+<!-- ══ CHAPITRE 7 : MEAL PREP, DARK ══ -->
+<section class="page pg-dark">
+  <span class="chapter-label">Chapitre 07 / 08</span>
+  <h2 class="section-title">Le Système<br>Meal Prep</h2>
+  <p style="font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:2px;color:var(--orange);margin-bottom:28px;">La discipline faite alimentation.</p>
+  <div class="divider"></div>
+  <p class="chapter-intro">L'improvisation alimentaire est le plus grand ennemi de ta transformation. Quand tu es fatigué après une longue journée, ton cerveau cherche la facilité. Si la facilité est une pizza, c'est ce que tu mangeras. Si la facilité est du poulet préparé et du riz cuit dans le frigo, c'est ce que tu mangeras.<br><br>Le meal prep n'est pas une contrainte. C'est un acte de leadership envers toi-même.</p>
+
+  <h3 class="sub-heading">Le système en 4 étapes</h3>
+  <div class="step-list">
+    <div class="step-item">
+      <div class="step-num">01</div>
+      <div class="step-content">
+        <h4>Planifie le dimanche (20 min)</h4>
+        <p>3 à 4 sources de protéines pour la semaine. 2 sources de glucides complexes. Ta liste d'épicerie. C'est tout.</p>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-num">02</div>
+      <div class="step-content">
+        <h4>Prépare le dimanche soir (90 min)</h4>
+        <p>Cuis tes protéines en batch. Cuis tes glucides. Lave et coupe tes légumes. Range en portions dans des contenants.</p>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-num">03</div>
+      <div class="step-content">
+        <h4>Assemble, ne cuisine pas</h4>
+        <p>Pendant la semaine : ouvre le frigo, prends une portion de chaque catégorie. 5 minutes par repas.</p>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-num">04</div>
+      <div class="step-content">
+        <h4>Itère chaque semaine</h4>
+        <p>Ce qui reste vendredi = ce que tu dois ajuster la semaine suivante.</p>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="sub-heading">Exemple de semaine type</h3>
+  <div class="two-col" style="margin-top:20px;">
+    <div class="col-block">
+      <h4>Protéines &amp; Glucides</h4>
+      <ul>
+        <li>Poulet, saumon, œufs durs, thon</li>
+        <li>Riz, patates douces, avoine</li>
+      </ul>
+    </div>
+    <div class="col-block">
+      <h4>Légumes &amp; Graisses</h4>
+      <ul>
+        <li>Brocoli, épinards, poivrons</li>
+        <li>Avocats, huile d'olive, noix</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CHAPITRE 8 : SUPPLÉMENTS, LIGHT ══ -->
+<section class="page pg-light">
+  <span class="chapter-label">Chapitre 08 / 08</span>
+  <h2 class="section-title">Les Suppléments</h2>
+  <p style="font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:2px;color:var(--orange);margin-bottom:28px;">Ce qui fonctionne vraiment, sans le marketing.</p>
+  <div class="divider"></div>
+  <p class="chapter-intro">L'industrie des suppléments est un marché de 180 milliards de dollars construit sur des promesses exagérées. Mais certains suppléments ont une base scientifique solide et un intérêt réel pour un père de 40 ans actif.</p>
+
+  <div class="supp-grid">
+    <div class="supp-col works">
+      <h4>Ce qui fonctionne</h4>
+      <ul>
+        <li><div><span class="supp-item-name">Créatine Monohydrate</span><br>Le supplément le plus étudié. Augmente la force, améliore la récupération. 3 à 5g/jour. ~10 à 15$/mois.</div></li>
+        <li><div><span class="supp-item-name">Whey Protéine</span><br>Outil de commodité. Utile si tu n'atteins pas tes cibles avec la nourriture. Choisis une whey isolat.</div></li>
+        <li><div><span class="supp-item-name">Vitamine D3 + K2</span><br>Essentiel au Canada. 2 000 à 4 000 UI de D3 + 100mcg de K2 avec un repas contenant des graisses.</div></li>
+        <li><div><span class="supp-item-name">Magnésium Glycinate</span><br>Sommeil, récupération, gestion du stress. 300 à 400mg avant le coucher.</div></li>
+        <li><div><span class="supp-item-name">Oméga-3 (EPA/DHA)</span><br>Si tu ne manges pas de poisson gras 3x/semaine. 1 à 2g d'EPA+DHA par jour.</div></li>
+      </ul>
+    </div>
+    <div class="supp-col skip">
+      <h4>Ce que tu peux éviter</h4>
+      <ul>
+        <li>Brûleurs de graisse</li>
+        <li>Boosters de testostérone OTC</li>
+        <li>Détox et cleanses</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="fact-box" style="margin-top:32px;">
+    <span class="fact-label">Règle d'Or</span>
+    <p class="fact-text"><strong>Si tu ne peux pas expliquer en une phrase pourquoi tu prends ce supplément, ne le prends pas.</strong></p>
+  </div>
+</section>
+
+<!-- ══ BREAK ══ -->
+<div class="break-page">
+  <div class="break-inner">
+    La connaissance ne transforme pas les corps.<br>
+    <span>L'exécution le fait.</span>
+  </div>
+</div>
+
+<!-- ══ CTA ══ -->
+<section id="cta" class="page">
+  <div class="cta-top">
+    <span class="cta-eyebrow">L'étape suivante</span>
+    <h2 class="cta-headline">
+      Programme<br>
+      <em>100 Jours</em><br>
+      La Transformation<br>Complète du Père
+    </h2>
+    <ul class="cta-includes">
+      <li>Programme d'entraînement personnalisé</li>
+      <li>Protocole de nutrition sur mesure</li>
+      <li>Check-ins hebdomadaires de responsabilité</li>
+      <li>Appels 1:1 stratégiques</li>
+    </ul>
+    <div class="cta-price">2 000$ · 10 places par mois</div>
+  </div>
+  <div class="cta-action">
+    <div>
+      <div class="cta-instruction">Envoie le mot en DM</div>
+      <span class="cta-keyword">LEGACY</span>
+      <p class="cta-note">@fatherempowering · Application seulement</p>
+    </div>
+    <div class="cta-right">
+      <div class="cta-brand-stack">FATHER EMPOWERING<br>THE LEGACY PROTOCOL<br>100 JOURS</div>
+      <div class="cta-url">fatherempowering.com</div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.06 });
+  document.querySelectorAll('.page, .break-page').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
